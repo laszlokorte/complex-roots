@@ -268,7 +268,7 @@
             <tspan>-1</tspan>
         </text>
         <text y={-zoomFactor + 5} x={-28} text-anchor="middle">
-            <tspan>-j</tspan>
+            <tspan>j</tspan>
         </text>
         <text y={zoomFactor + 5} x={-28} text-anchor="middle">
             <tspan>-j</tspan>
@@ -712,6 +712,7 @@
         display: block;
         width: 100%;
         height: 100%;
+        user-select: none;
     }
     .fullscreen {
         color: #000;
