@@ -485,7 +485,7 @@
                 >More edcuational tools</a
             >
         </p>
-        <details open>
+        <details>
             <summary>Explanation</summary>
             <div>
                 <p>
