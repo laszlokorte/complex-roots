@@ -302,7 +302,7 @@
             <circle
                 cx={car.re * zoomFactor}
                 cy={-car.im * zoomFactor}
-                r={c || !showSelectedRoot ? 8 : 10}
+                r={c != selectedRoot || !showSelectedRoot ? 8 : 10}
                 fill={c != selectedRoot % root || !showSelectedRoot
                     ? "maroon"
                     : "red"}
