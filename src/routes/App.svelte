@@ -221,7 +221,7 @@
                 cy={-cartesianOffsetMin.im / 3}
                 r={5}
                 fill="hsl({(-offsetPhase * 180) / Math.PI}, 100%, 50%)"
-                stroke="#c77"
+                stroke="#278285"
                 stroke-width="2"
                 cursor="grab"
                 onpointerdown={dragDiscStart}
@@ -305,7 +305,7 @@
                 r={c != selectedRoot || !showSelectedRoot ? 8 : 10}
                 fill={c != selectedRoot % root || !showSelectedRoot
                     ? "maroon"
-                    : "red"}
+                    : "#f40"}
                 stroke="white"
                 stroke-width="2"
                 cursor="grab"
@@ -357,7 +357,7 @@
             >
             <tspan>[</tspan>
             <tspan>Magnitude: {numF.format(polar.mag)}</tspan>
-            <tspan>Phase: {numF.format(-polar.phase / Math.PI)}&pi;</tspan>
+            <tspan>Phase: {numF.format(polar.phase / Math.PI)}&pi;</tspan>
             <tspan>]</tspan>
         </text>
     </svg>
@@ -377,9 +377,10 @@
                 >
                 <button
                     type="button"
+                    class="reset-button"
                     tabindex="-1"
                     onkeypress={resetZoom}
-                    onclick={resetZoom}>X</button
+                    onclick={resetZoom}>&times;</button
                 >
                 <output>{numFS.format(zoom)}</output>
             </div>
@@ -396,9 +397,10 @@
                 >
                 <button
                     type="button"
+                    class="reset-button"
                     tabindex="-1"
                     onkeypress={resetMagnitude}
-                    onclick={resetMagnitude}>X</button
+                    onclick={resetMagnitude}>&times;</button
                 >
 
                 <output>{numF.format(polar.mag)}</output>
@@ -416,9 +418,10 @@
                 >
                 <button
                     type="button"
+                    class="reset-button"
                     tabindex="-1"
                     onkeypress={resetPhase}
-                    onclick={resetPhase}>X</button
+                    onclick={resetPhase}>&times;</button
                 >
 
                 <output>{numF.format(polar.phase / Math.PI)} &pi;</output>
@@ -432,7 +435,7 @@
                         min="1"
                         max={maxRoot}
                     /></label
-                ><output>{numI.format(root)}</output>
+                ><span></span><output>{numI.format(root)}</output>
             </div>
 
             <div class="slider-control">
@@ -440,13 +443,14 @@
                     <label>
                         <span>Show Designated Root</span>
                         <input
+                            style:accent-color="#f20"
                             type="checkbox"
                             bind:checked={showSelectedRoot}
                         />
                     </label>
                 </div>
             </div>
-            <div class="slider-control" style:accent-color="red">
+            <div class="slider-control" style:accent-color="#f20">
                 <label
                     ><span>Designated Root:</span>
                     <input
@@ -456,9 +460,9 @@
                         min="0"
                         max={maxRoot}
                     /></label
-                ><output>{numI.format(selectedRoot)}</output>
+                ><span></span><output>{numI.format(selectedRoot)}</output>
             </div>
-            <div class="slider-control" style:accent-color="#c77">
+            <div class="slider-control" style:accent-color="#278285">
                 <label
                     ><span>Discontinuity:</span>
                     <input
@@ -473,9 +477,10 @@
                 <button
                     disabled={!showSelectedRoot}
                     type="button"
+                    class="reset-button"
                     tabindex="-1"
                     onkeypress={resetOffset}
-                    onclick={resetOffset}>X</button
+                    onclick={resetOffset}>&times;</button
                 >
                 <output>{numF.format(offsetPhase / Math.PI)} &pi;</output>
             </div>
@@ -693,7 +698,7 @@
     }
     .slider-control {
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: auto 2fr auto;
         gap: 1em;
         display: subgrid;
         grid-column: 1 / 4;
@@ -731,11 +736,11 @@
         background-image: conic-gradient(
             from 90deg,
             rgba(255, 0, 0, 0.2),
-            rgba(255, 255, 0, 0.2),
-            rgba(0, 255, 0, 0.2),
-            rgba(0, 255, 255, 0.2),
-            rgba(0, 0, 255, 0.2),
             rgba(255, 0, 255, 0.2),
+            rgba(0, 0, 255, 0.2),
+            rgba(0, 255, 255, 0.2),
+            rgba(0, 255, 0, 0.2),
+            rgba(255, 255, 0, 0.2),
             rgba(255, 0, 0, 0.2)
         );
     }
@@ -747,14 +752,20 @@
     .hidden {
         display: none;
     }
-    button {
+    .reset-button {
         background-color: black;
         color: #fff;
         border: none;
         width: 1.5em;
         height: 1.5em;
+        vertical-align: middle;
+        font-family: monospace;
         padding: 0;
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
     }
     a {
         color: purple;
