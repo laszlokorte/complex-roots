@@ -261,23 +261,23 @@
             stroke="black"
             vector-effect="non-scaling-stroke"
         />
-        <text x={zoomFactor} y={28} text-anchor="middle">
-            <tspan>1</tspan>
+        <text font-size="16" x={zoomFactor} y={28} text-anchor="middle">
+            <tspan font-size="16">1</tspan>
         </text>
-        <text x={-zoomFactor} y={28} text-anchor="middle">
-            <tspan>-1</tspan>
+        <text font-size="16" x={-zoomFactor} y={28} text-anchor="middle">
+            <tspan font-size="16">-1</tspan>
         </text>
-        <text y={-zoomFactor + 5} x={-28} text-anchor="middle">
-            <tspan>j</tspan>
+        <text font-size="16" y={-zoomFactor + 5} x={-28} text-anchor="middle">
+            <tspan font-size="16">j</tspan>
         </text>
-        <text y={zoomFactor + 5} x={-28} text-anchor="middle">
-            <tspan>-j</tspan>
+        <text font-size="16" y={zoomFactor + 5} x={-28} text-anchor="middle">
+            <tspan font-size="16">-j</tspan>
         </text>
-        <text x={size.x / 2 - 32} y={-8}>
-            <tspan>Re</tspan>
+        <text font-size="16" x={size.x / 2 - 32} y={-8}>
+            <tspan font-size="16">Re</tspan>
         </text>
-        <text y={-size.y / 2 + 16} x={4}>
-            <tspan>Im</tspan>
+        <text font-size="16" y={-size.y / 2 + 16} x={4}>
+            <tspan font-size="16">Im</tspan>
         </text>
         <circle
             cx={0}
@@ -314,13 +314,16 @@
                 onpointerup={dragRootEnd}
             ></circle>
             <text
+                font-size="16"
                 class={{ hidden: !showSelectedRoot }}
                 pointer-events="none"
                 x={car.re * zoomFactor}
                 y={-car.im * zoomFactor - 0.2 * zoomFactor}
             >
-                <tspan>r</tspan><tspan baseline-shift="sub" font-size="small"
-                    >{c + 1}</tspan
+                <tspan font-size="16">r</tspan><tspan
+                    baseline-shift="sub"
+                    vertical-align="sub"
+                    font-size="small">{c + 1}</tspan
                 >
             </text>
         {/each}
@@ -346,19 +349,24 @@
             onpointerup={dragEnd}
         ></circle>
         <text
+            font-size="16"
             pointer-events="none"
             x={cartesian.re * zoomFactor}
             y={-cartesian.im * zoomFactor - 0.2 * zoomFactor}
             fill="purple"
             cursor="grab"
         >
-            <tspan>z</tspan><tspan baseline-shift="sub" font-size="small"
-                >0</tspan
+            <tspan font-size="16">z</tspan><tspan
+                baseline-shift="sub"
+                vertical-align="sub"
+                font-size="small">0</tspan
             >
-            <tspan>[</tspan>
-            <tspan>Magnitude: {numF.format(polar.mag)}</tspan>
-            <tspan>Phase: {numF.format(polar.phase / Math.PI)}&pi;</tspan>
-            <tspan>]</tspan>
+            <tspan font-size="16">[</tspan>
+            <tspan font-size="16">Magnitude: {numF.format(polar.mag)}</tspan>
+            <tspan font-size="16"
+                >Phase: {numF.format(polar.phase / Math.PI)}&pi;</tspan
+            >
+            <tspan font-size="16">]</tspan>
         </text>
     </svg>
     <div class="options">
@@ -662,6 +670,9 @@
 </div>
 
 <style>
+    text {
+        font-size: 1em;
+    }
     summary {
         cursor: pointer;
         background-color: #0001;
@@ -776,5 +787,8 @@
     }
     output {
         width: 5em;
+    }
+    a {
+        color: royalblue;
     }
 </style>
