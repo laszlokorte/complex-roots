@@ -1,4 +1,5 @@
 <script>
+    import { tick } from "svelte";
     const numF = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: 3,
         maximumFractionDigits: 3,
@@ -165,6 +166,12 @@
     function resetPhase() {
         polar.phase = 0;
     }
+    async function fontSizeFix(node) {
+        node.setAttribute("display", "none");
+        await new Promise((r) => requestAnimationFrame(r));
+        await new Promise((r) => requestAnimationFrame(r));
+        node.setAttribute("display", "initial");
+    }
 </script>
 
 <div class="fullscreen">
@@ -182,10 +189,10 @@
             cy={0}
             r={zoomFactor}
             fill="none"
-            stroke-width="2"
-            stroke="#ccc"
+            stroke-width="1"
+            stroke="#000"
             vector-effect="non-scaling-stroke"
-            stroke-dasharray="3 3"
+            stroke-dasharray="1 10"
         ></circle>
         <circle cx={0} cy={0} r={2}></circle>
         <line
@@ -210,10 +217,10 @@
                 y1={0}
                 x2={cartesianOffset.re * zoomFactor}
                 y2={-cartesianOffset.im * zoomFactor}
-                stroke-width="2"
+                stroke-width="1"
                 stroke="#000"
                 vector-effect="non-scaling-stroke"
-                stroke-dasharray="3 5"
+                stroke-dasharray="3 6"
             />
 
             <g>
@@ -272,35 +279,53 @@
             stroke="black"
             vector-effect="non-scaling-stroke"
         />
-        <text font-size="16" x={zoomFactor} y={28} text-anchor="middle">
-            <tspan font-size="16">1</tspan>
+        <text class="axis-label" x={zoomFactor} y={28} text-anchor="middle">
+            <tspan>1</tspan>
         </text>
-        <text font-size="16" x={-zoomFactor} y={28} text-anchor="middle">
-            <tspan font-size="16">-1</tspan>
+        <text class="axis-label" x={-zoomFactor} y={28} text-anchor="middle">
+            <tspan>-1</tspan>
         </text>
-        <text font-size="16" y={-zoomFactor + 5} x={-28} text-anchor="middle">
-            <tspan font-size="16">j</tspan>
+        <text
+            class="axis-label"
+            y={-zoomFactor + 5}
+            x={-28}
+            text-anchor="middle"
+        >
+            <tspan>j</tspan>
         </text>
-        <text font-size="16" y={zoomFactor + 5} x={-28} text-anchor="middle">
-            <tspan font-size="16">-j</tspan>
+        <text
+            class="axis-label"
+            y={zoomFactor + 5}
+            x={-28}
+            text-anchor="middle"
+        >
+            <tspan>-j</tspan>
         </text>
-        <text font-size="16" x={size.x / 2 - 32} y={-8}>
-            <tspan font-size="16">Re</tspan>
+        <text class="axis-label" x={size.x / 2 - 32} y={-8}>
+            <tspan>Re</tspan>
         </text>
-        <text font-size="16" y={-size.y / 2 + 16} x={4}>
-            <tspan font-size="16">Im</tspan>
+        <text class="axis-label" y={-size.y / 2 + 16} x={4}>
+            <tspan>Im</tspan>
         </text>
-        <circle
-            cx={0}
-            cy={0}
-            r={polarRoots[0].mag * zoomFactor}
-            fill="none"
-            stroke-width="1"
-            stroke="#a77"
-            vector-effect="non-scaling-stroke"
-            stroke-dasharray="1 5"
-        ></circle>
-
+        {#each cartesianRoots as car, c (c)}
+            <path
+                d="M {car.re * zoomFactor} {-car.im * zoomFactor} A {polarRoots[
+                    c
+                ].mag * zoomFactor}  {polarRoots[c].mag *
+                    zoomFactor} 0 0 0  {cartesianRoots[
+                    (c + 1) % cartesianRoots.length
+                ].re * zoomFactor} {-cartesianRoots[
+                    (c + 1) % cartesianRoots.length
+                ].im * zoomFactor}"
+                fill="none"
+                stroke-width="1"
+                stroke="darkred"
+                vector-effect="non-scaling-stroke"
+                stroke-dasharray="5 5"
+                stroke-dashoffset={(-polarRoots[0].mag * Math.PI * zoomFactor) /
+                    (polarRoots.length + 1)}
+            ></path>
+        {/each}
         {#each cartesianRoots as car, c (c)}
             <line
                 x1={0}
@@ -337,16 +362,16 @@
                 ></circle>
             </g>
             <text
-                font-size="16"
+                {@attach fontSizeFix}
                 class={{ hidden: !showSelectedRoot }}
                 pointer-events="none"
                 x={car.re * zoomFactor}
                 y={-car.im * zoomFactor - 0.2 * zoomFactor}
             >
-                <tspan font-size="16">r</tspan><tspan
+                <tspan>r</tspan><tspan
                     baseline-shift="sub"
                     vertical-align="sub"
-                    font-size="small">{c + 1}</tspan
+                    font-size="0.6em">{c + 1}</tspan
                 >
             </text>
         {/each}
@@ -366,7 +391,6 @@
                 cy={-cartesian.im * zoomFactor}
                 r={12}
                 fill="purple"
-                cursor="grab"
                 stroke="white"
                 stroke-width="2"
             ></circle>
@@ -385,24 +409,35 @@
             ></circle>
         </g>
         <text
-            font-size="16"
+            {@attach fontSizeFix}
             pointer-events="none"
             x={cartesian.re * zoomFactor}
             y={-cartesian.im * zoomFactor - 0.2 * zoomFactor}
             fill="purple"
-            cursor="grab"
         >
-            <tspan font-size="16">z</tspan><tspan
+            <tspan>z</tspan><tspan
                 baseline-shift="sub"
                 vertical-align="sub"
-                font-size="small">0</tspan
+                font-size="0.6em">0</tspan
             >
-            <tspan font-size="16">[</tspan>
-            <tspan font-size="16">Magnitude: {numF.format(polar.mag)}</tspan>
-            <tspan font-size="16"
+        </text>
+        <text
+            {@attach fontSizeFix}
+            pointer-events="none"
+            x={cartesian.re * zoomFactor}
+            y={-cartesian.im * zoomFactor - 0.2 * zoomFactor}
+            fill="purple"
+        >
+            <tspan font-size="0.7em" dx="4em"
+                >Magnitude: {numF.format(polar.mag)}</tspan
+            >
+            <tspan
+                font-size="0.7em"
+                dy="1.5em"
+                dx="4em"
+                x={cartesian.re * zoomFactor}
                 >Phase: {numF.format(polar.phase / Math.PI)}&pi;</tspan
             >
-            <tspan font-size="16">]</tspan>
         </text>
     </svg>
     <div class="options">
@@ -827,5 +862,12 @@
     }
     a {
         color: royalblue;
+    }
+    text {
+        font-size: 2em;
+        font-family: monospace;
+    }
+    .axis-label {
+        font-size: 1.2em;
     }
 </style>
