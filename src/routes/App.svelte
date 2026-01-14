@@ -216,18 +216,29 @@
                 stroke-dasharray="3 5"
             />
 
-            <circle
-                cx={cartesianOffsetMin.re / 3}
-                cy={-cartesianOffsetMin.im / 3}
-                r={5}
-                fill="hsl({(-offsetPhase * 180) / Math.PI}, 100%, 50%)"
-                stroke="#278285"
-                stroke-width="2"
-                cursor="grab"
-                onpointerdown={dragDiscStart}
-                onpointermove={dragDiscMove}
-                onpointerup={dragDiscEnd}
-            ></circle>
+            <g>
+                <circle
+                    cx={cartesianOffsetMin.re / 3}
+                    cy={-cartesianOffsetMin.im / 3}
+                    r={5}
+                    fill="hsl({(-offsetPhase * 180) / Math.PI}, 100%, 50%)"
+                    stroke="#278285"
+                    stroke-width="2"
+                ></circle>
+                <circle
+                    cx={cartesianOffsetMin.re / 3}
+                    cy={-cartesianOffsetMin.im / 3}
+                    r={20}
+                    fill="none"
+                    pointer-events="all"
+                    stroke="none"
+                    stroke-width="0"
+                    cursor="grab"
+                    onpointerdown={dragDiscStart}
+                    onpointermove={dragDiscMove}
+                    onpointerup={dragDiscEnd}
+                ></circle>
+            </g>
         </g>
         <line
             x1={-zoomFactor}
@@ -299,20 +310,32 @@
                 stroke="black"
                 vector-effect="non-scaling-stroke"
             />
-            <circle
-                cx={car.re * zoomFactor}
-                cy={-car.im * zoomFactor}
-                r={c != selectedRoot || !showSelectedRoot ? 8 : 10}
-                fill={c != selectedRoot % root || !showSelectedRoot
-                    ? "maroon"
-                    : "#f40"}
-                stroke="white"
-                stroke-width="2"
-                cursor="grab"
-                onpointerdown={dragRootStart}
-                onpointermove={dragRootMove}
-                onpointerup={dragRootEnd}
-            ></circle>
+
+            <g>
+                <circle
+                    cx={car.re * zoomFactor}
+                    cy={-car.im * zoomFactor}
+                    r={c != selectedRoot || !showSelectedRoot ? 8 : 10}
+                    fill={c != selectedRoot % root || !showSelectedRoot
+                        ? "maroon"
+                        : "#f40"}
+                    stroke="white"
+                    stroke-width="2"
+                ></circle>
+                <circle
+                    cx={car.re * zoomFactor}
+                    cy={-car.im * zoomFactor}
+                    r={20}
+                    fill={"none"}
+                    stroke="none"
+                    stroke-width="0"
+                    cursor="grab"
+                    pointer-events="all"
+                    onpointerdown={dragRootStart}
+                    onpointermove={dragRootMove}
+                    onpointerup={dragRootEnd}
+                ></circle>
+            </g>
             <text
                 font-size="16"
                 class={{ hidden: !showSelectedRoot }}
@@ -336,18 +359,31 @@
             stroke="black"
             vector-effect="non-scaling-stroke"
         />
-        <circle
-            cx={cartesian.re * zoomFactor}
-            cy={-cartesian.im * zoomFactor}
-            r={12}
-            fill="purple"
-            cursor="grab"
-            stroke="white"
-            stroke-width="2"
-            onpointerdown={dragStart}
-            onpointermove={dragMove}
-            onpointerup={dragEnd}
-        ></circle>
+
+        <g>
+            <circle
+                cx={cartesian.re * zoomFactor}
+                cy={-cartesian.im * zoomFactor}
+                r={12}
+                fill="purple"
+                cursor="grab"
+                stroke="white"
+                stroke-width="2"
+            ></circle>
+            <circle
+                cx={cartesian.re * zoomFactor}
+                cy={-cartesian.im * zoomFactor}
+                r={25}
+                fill="none"
+                cursor="grab"
+                stroke="none"
+                stroke-width="0"
+                pointer-events="all"
+                onpointerdown={dragStart}
+                onpointermove={dragMove}
+                onpointerup={dragEnd}
+            ></circle>
+        </g>
         <text
             font-size="16"
             pointer-events="none"
@@ -729,10 +765,11 @@
         width: 100%;
         height: 100%;
         user-select: none;
+        touch-action: none;
     }
     .fullscreen {
         color: #000;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
